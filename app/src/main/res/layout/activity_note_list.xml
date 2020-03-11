@@ -6,9 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".NoteListActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/backgroundLight"
+        android:id="@+id/toolbar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_note" />
+        app:spanCount="2"
+        tools:listitem="@layout/item_note_2" />
 </RelativeLayout>

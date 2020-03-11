@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    def materialDesignVersion = "1.1.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -45,4 +46,8 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     // Flexbox
     implementation 'com.google.android:flexbox:2.0.1'
+
+    // Material Design
+    implementation "com.google.android.material:material:$materialDesignVersion"
+    implementation "androidx.mediarouter:mediarouter:$materialDesignVersion"
 }

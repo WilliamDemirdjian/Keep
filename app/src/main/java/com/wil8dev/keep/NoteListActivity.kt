@@ -1,12 +1,18 @@
 package com.wil8dev.keep
 
+import android.app.Activity
 import android.content.Intent
+import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import kotlinx.android.synthetic.main.activity_note_list.*
+
+//TODO in activiti_note_detail.xml -> android:textCursorDrawable="@drawable/black_cursor" not working
 
 class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var notes: MutableList<Note>
@@ -23,43 +29,50 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
                 "Etablissement Public du Palais de la Découverte et de la Cité des Sciences et de l'Industrie"
             )
         )
-        notes.add(Note("Toto", "Toto en Bretagne"))
-        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
-        notes.add(Note("Ansdjzndaaaaaa", "njdnjkkm,zmf"))
-        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-        notes.add(Note("Toto", "Toto en Bretagne"))
-        notes.add(Note("Just a title", ""))
-        notes.add(Note("", "Just a note"))
-        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
-        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-        notes.add(
-            Note(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-                "fghjkhjk,zmf"
-            )
-        )
-        notes.add(
-            Note(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-                "fghjkhjk,zmf"
-            )
-        )
-        notes.add(
-            Note(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-                "fghjkhjk,zmf"
-            )
-        )
+//        notes.add(Note("Toto", "Toto en Bretagne"))
+//        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
+//        notes.add(Note("Ansdjzndaaaaaa", "njdnjkkm,zmf"))
+//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+//        notes.add(Note("Toto", "Toto en Bretagne"))
+//        notes.add(Note("Just a title", ""))
+//        notes.add(Note("", "Just a note"))
+//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+//        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
+//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+//        notes.add(
+//            Note(
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+//                "fghjkhjk,zmf"
+//            )
+//        )
+//        notes.add(
+//            Note(
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+//                "fghjkhjk,zmf"
+//            )
+//        )
+//        notes.add(
+//            Note(
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+//                "fghjkhjk,zmf"
+//            )
+//        )
 
         noteAdapter = NoteAdapter(notes, this)
-        var layoutManagerA = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        layoutManagerA.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-        recyclerView.apply {
-//            layoutManager = GridLayoutManager(this.context, 2)
-            layoutManager = layoutManagerA
-            adapter = noteAdapter
-        }
+//        var layoutManagerA = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//        layoutManagerA.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+//        recyclerView.apply {
+////            layoutManager = GridLayoutManager(this.context, 2)
+//            layoutManager = layoutManagerA
+//            adapter = noteAdapter
+//        }
+
+        val layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = noteAdapter
+
+
+        setSupportActionBar(toolbar)
     }
 
     override fun onClick(view: View) {
@@ -74,6 +87,23 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, NoteDetailActivity::class.java)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, noteIndex)
-        startActivity(intent)
+        startActivityForResult(intent, NoteDetailActivity.REQUEST_CODE_EDITED_NOTE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || data == null) {
+            return
+        }
+        when (requestCode) {
+            NoteDetailActivity.REQUEST_CODE_EDITED_NOTE -> saveReceivedData(data)
+        }
+    }
+
+    private fun saveReceivedData(data: Intent) {
+        val noteIndex = data.getIntExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, -1)
+        val note = data.getParcelableExtra<Note>(NoteDetailActivity.EXTRA_NOTE)
+        notes[noteIndex] = note
+        noteAdapter.notifyDataSetChanged()
     }
 }
