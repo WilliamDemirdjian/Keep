@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.activity_note_list.*
-import java.nio.file.NotDirectoryException
 
 class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var notes: MutableList<Note>
@@ -35,12 +33,31 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
         notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
         notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
 
         noteAdapter = NoteAdapter(notes, this)
-
+        var layoutManagerA = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        layoutManagerA.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         recyclerView.apply {
-            layoutManager = GridLayoutManager(this.context, 2)
+//            layoutManager = GridLayoutManager(this.context, 2)
+            layoutManager = layoutManagerA
             adapter = noteAdapter
         }
     }

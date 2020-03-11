@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlack">#000000</color>
+    <color name="backgroundDark">#202124</color>
+    <color name="backgroundLight">#FAFAFA</color>
+    <color name="textColorBackgroundDark">#e8eaed</color>
+    <color name="cardViewBorderColor">#E9EAEC</color>
 </resources>

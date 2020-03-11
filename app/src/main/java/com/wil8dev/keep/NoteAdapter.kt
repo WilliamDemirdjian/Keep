@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NoteAdapter(val noteList: List<Note>, val itemClickListener: View.OnClickListener) :
+class NoteAdapter(private val noteList: List<Note>, private val itemClickListener: View.OnClickListener) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
