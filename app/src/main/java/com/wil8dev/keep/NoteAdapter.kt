@@ -25,7 +25,15 @@ class NoteAdapter(val noteList: List<Note>, val itemClickListener: View.OnClickL
         val note = noteList[position]
         holder.itemView.cardView.setOnClickListener(itemClickListener)
         holder.itemView.cardView.tag = position
-        holder.itemView.title.text = note.title
-        holder.itemView.content.text = note.content
+        if(note.title.isNotEmpty()) {
+            holder.itemView.title.text = note.title
+        } else {
+            holder.itemView.title.visibility = View.GONE
+        }
+        if(note.content.isNotEmpty()) {
+            holder.itemView.content.text = note.content
+        } else {
+            holder.itemView.content.visibility = View.GONE
+        }
     }
 }

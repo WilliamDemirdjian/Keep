@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_note_list.*
 import java.nio.file.NotDirectoryException
@@ -28,11 +29,18 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
         notes.add(Note("Ansdjzndaaaaaa", "njdnjkkm,zmf"))
         notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(Note("Toto", "Toto en Bretagne"))
+        notes.add(Note("Just a title", ""))
+        notes.add(Note("", "Just a note"))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
 
         noteAdapter = NoteAdapter(notes, this)
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(this.context)
+            layoutManager = GridLayoutManager(this.context, 2)
             adapter = noteAdapter
         }
     }

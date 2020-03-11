@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
     android:padding="4dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -18,8 +18,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="9dp"
-            android:padding="16dp">
+            android:layout_margin="4dp"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/title"
@@ -39,7 +39,7 @@
                 android:layout_below="@+id/title"
                 android:ellipsize="end"
                 android:maxLines="10"
-                tools:text="content" />
+                tools:text="Note" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
