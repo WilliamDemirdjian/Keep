@@ -12,7 +12,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.snackbar.Snackbar
+import com.wil8dev.keep.utils.loadNotes
+import com.wil8dev.keep.utils.persistNote
 import kotlinx.android.synthetic.main.activity_note_list.*
+import java.io.Serializable
 
 //TODO in activiti_note_detail.xml -> android:textCursorDrawable="@drawable/black_cursor" not working
 
@@ -24,8 +27,8 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_list)
 
-        notes = mutableListOf<Note>()
-        notes.add(
+        notes = loadNotes(this)
+        /*notes.add(
             Note(
                 "EPPDCSI",
                 "Etablissement Public du Palais de la Découverte et de la Cité des Sciences et de l'Industrie"
@@ -58,7 +61,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
                 "fghjkhjk,zmf"
             )
-        )
+        )*/
 
         noteAdapter = NoteAdapter(notes, this)
 //        var layoutManagerA = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -114,7 +117,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
             notes[noteIndex]
         }
         val intent = Intent(this, NoteDetailActivity::class.java)
-        intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note)
+        intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note as Serializable)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, noteIndex)
         startActivityForResult(intent, NoteDetailActivity.REQUEST_CODE_EDITED_NOTE)
     }
@@ -130,6 +133,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun saveData(note: Note, noteIndex: Int) {
+        persistNote(this, note)
         if (noteIndex == -1 && (note.title.isNotEmpty() || note.content.isNotEmpty())) {
             notes.add(0, note)
         } else if (noteIndex == -1 && (note.title.isEmpty() && note.content.isEmpty())) {
@@ -158,6 +162,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
             return
         } else {
             val note = notes.removeAt(noteIndex)
+            com.wil8dev.keep.utils.deleteNote(this, note)
             noteAdapter.notifyDataSetChanged()
         }
     }

@@ -2,9 +2,10 @@ package com.wil8dev.keep
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.io.Serializable
 
 data class Note(var title: String = "", var content: String = "", var fileName: String = "") :
-    Parcelable {
+    Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
@@ -22,6 +23,7 @@ data class Note(var title: String = "", var content: String = "", var fileName: 
     }
 
     companion object CREATOR : Parcelable.Creator<Note> {
+        private val serialVersionUid: Long = 666
         override fun createFromParcel(parcel: Parcel): Note {
             return Note(parcel)
         }

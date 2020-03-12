@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_note_detail.*
+import java.io.Serializable
 
 
 class NoteDetailActivity : AppCompatActivity() {
@@ -47,7 +48,7 @@ class NoteDetailActivity : AppCompatActivity() {
         note.title = title_note_detail.text.toString()
         note.content = content_note_detail.text.toString()
         intent = Intent(ACTION_SAVE_NOTE)
-        intent.putExtra(EXTRA_NOTE, note)
+        intent.putExtra(EXTRA_NOTE, note as Serializable)
         intent.putExtra(EXTRA_NOTE_INDEX, noteIndex)
         setResult(Activity.RESULT_OK, intent)
         finish()
