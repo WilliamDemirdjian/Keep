@@ -34,6 +34,7 @@ class NoteDetailActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbarNoteDetail)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false);
     }
 
     override fun onBackPressed() {

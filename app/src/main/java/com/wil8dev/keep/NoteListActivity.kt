@@ -75,6 +75,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
 
 
         setSupportActionBar(toolbarNoteListActivity)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false);
         addNote_fab.setOnClickListener(this)
     }
 
