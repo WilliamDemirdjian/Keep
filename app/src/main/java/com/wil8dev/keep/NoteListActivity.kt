@@ -2,6 +2,7 @@ package com.wil8dev.keep
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_note_list.*
 
 //TODO in activiti_note_detail.xml -> android:textCursorDrawable="@drawable/black_cursor" not working
@@ -89,6 +91,15 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun createNote() {
         showNoteDetail(-1)
+    }
+
+    private fun deleteSnackbar() {
+        val snackbar = Snackbar.make(rootLayout, getString(R.string.deleted_text_snackbar), Snackbar.LENGTH_INDEFINITE)
+        snackbar.setAction(getString(R.string.undo)) {
+            Log.i("MainActivity", "Clicked on Snackbar : undo")
+        }
+        snackbar.setActionTextColor(Color.MAGENTA)
+        snackbar.show()
     }
 
     fun showNoteDetail(noteIndex: Int) {

@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_note_detail.*
 
 
@@ -49,19 +50,17 @@ class NoteDetailActivity : AppCompatActivity() {
         finish()
     }
 
-    //setting menu in action bar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.note_detail_activity_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    // actions on click menu items
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.delete_note_detail_menu -> {
-            Toast.makeText(this,"delete action",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "delete action", Toast.LENGTH_LONG).show()
             true
         }
-        android.R.id.home ->{
+        android.R.id.home -> {
             saveNote()
             true
         }
