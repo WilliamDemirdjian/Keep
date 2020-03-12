@@ -84,7 +84,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
             Log.i("NoteListActivity", "clicked on ")
             showNoteDetail(view.tag as Int)
         } else {
-            when(view.id) {
+            when (view.id) {
                 R.id.addNote_fab -> createNote()
             }
         }
@@ -95,7 +95,11 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun deleteSnackbar() {
-        val snackbar = Snackbar.make(rootLayout, getString(R.string.deleted_text_snackbar), Snackbar.LENGTH_INDEFINITE)
+        val snackbar = Snackbar.make(
+            rootLayout,
+            getString(R.string.deleted_text_snackbar),
+            Snackbar.LENGTH_INDEFINITE
+        )
         snackbar.setAction(getString(R.string.undo)) {
             Log.i("MainActivity", "Clicked on Snackbar : undo")
         }
@@ -104,7 +108,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun showNoteDetail(noteIndex: Int) {
-        val note = if(noteIndex == -1) {
+        val note = if (noteIndex == -1) {
             Note()
         } else {
             notes[noteIndex]
@@ -117,24 +121,44 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || data == null) {
+        if (resultCode != Activity.RESULT_OK || data == null) {
             return
         }
         when (requestCode) {
-            NoteDetailActivity.REQUEST_CODE_EDITED_NOTE -> saveReceivedData(data)
+            NoteDetailActivity.REQUEST_CODE_EDITED_NOTE -> editNoteResult(data)
         }
     }
 
-    private fun saveReceivedData(data: Intent) {
-        val noteIndex = data.getIntExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, -1)
-        val note = data.getParcelableExtra<Note>(NoteDetailActivity.EXTRA_NOTE)
-        if(noteIndex == -1 && (note.title.isNotEmpty() || note.content.isNotEmpty())) {
+    private fun saveData(note: Note, noteIndex: Int) {
+        if (noteIndex == -1 && (note.title.isNotEmpty() || note.content.isNotEmpty())) {
             notes.add(0, note)
-        } else if(noteIndex == -1 && (note.title.isEmpty() && note.content.isEmpty())) {
+        } else if (noteIndex == -1 && (note.title.isEmpty() && note.content.isEmpty())) {
             return
         } else {
             notes[noteIndex] = note
         }
         noteAdapter.notifyDataSetChanged()
+    }
+
+    private fun editNoteResult(data: Intent) {
+        val noteIndex = data.getIntExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, -1)
+        when (data.action) {
+            NoteDetailActivity.ACTION_SAVE_NOTE -> {
+                val note = data.getParcelableExtra<Note>(NoteDetailActivity.EXTRA_NOTE)
+                saveData(note, noteIndex)
+            }
+            NoteDetailActivity.ACTION_DELETE_NOTE -> {
+                deleteNote(noteIndex)
+            }
+        }
+    }
+
+    private fun deleteNote(noteIndex: Int) {
+        if(noteIndex == -1) {
+            return
+        } else {
+            val note = notes.removeAt(noteIndex)
+            noteAdapter.notifyDataSetChanged()
+        }
     }
 }

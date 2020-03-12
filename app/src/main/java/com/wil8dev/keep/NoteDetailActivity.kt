@@ -17,6 +17,8 @@ class NoteDetailActivity : AppCompatActivity() {
         val EXTRA_NOTE = "note"
         val EXTRA_NOTE_INDEX = "noteIndex"
         val REQUEST_CODE_EDITED_NOTE = 1
+        val ACTION_SAVE_NOTE = "com.wil8dev.keep.actions.ACTION_SAVE_NOTE"
+        val ACTION_DELETE_NOTE = "com.wil8dev.keep.actions.ACTION_DELETE_NOTE"
     }
 
     lateinit var note: Note
@@ -44,7 +46,7 @@ class NoteDetailActivity : AppCompatActivity() {
     fun saveNote() {
         note.title = title_note_detail.text.toString()
         note.content = content_note_detail.text.toString()
-        intent = Intent()
+        intent = Intent(ACTION_SAVE_NOTE)
         intent.putExtra(EXTRA_NOTE, note)
         intent.putExtra(EXTRA_NOTE_INDEX, noteIndex)
         setResult(Activity.RESULT_OK, intent)
@@ -59,6 +61,7 @@ class NoteDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.delete_note_detail_menu -> {
             Toast.makeText(this, "delete action", Toast.LENGTH_LONG).show()
+            deleteNote()
             true
         }
         android.R.id.home -> {
@@ -69,5 +72,12 @@ class NoteDetailActivity : AppCompatActivity() {
         else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    fun deleteNote() {
+        intent = Intent(ACTION_DELETE_NOTE)
+        intent.putExtra(EXTRA_NOTE_INDEX, noteIndex)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 }
