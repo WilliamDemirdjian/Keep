@@ -29,34 +29,34 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
                 "Etablissement Public du Palais de la Découverte et de la Cité des Sciences et de l'Industrie"
             )
         )
-//        notes.add(Note("Toto", "Toto en Bretagne"))
-//        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
-//        notes.add(Note("Ansdjzndaaaaaa", "njdnjkkm,zmf"))
-//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-//        notes.add(Note("Toto", "Toto en Bretagne"))
-//        notes.add(Note("Just a title", ""))
-//        notes.add(Note("", "Just a note"))
-//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-//        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
-//        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
-//        notes.add(
-//            Note(
-//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-//                "fghjkhjk,zmf"
-//            )
-//        )
-//        notes.add(
-//            Note(
-//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-//                "fghjkhjk,zmf"
-//            )
-//        )
-//        notes.add(
-//            Note(
-//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
-//                "fghjkhjk,zmf"
-//            )
-//        )
+        notes.add(Note("Toto", "Toto en Bretagne"))
+        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
+        notes.add(Note("Ansdjzndaaaaaa", "njdnjkkm,zmf"))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(Note("Toto", "Toto en Bretagne"))
+        notes.add(Note("Just a title", ""))
+        notes.add(Note("", "Just a note"))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(Note("Aaaaaaa", getString(R.string.lorem_ipsum)))
+        notes.add(Note("kzsakddfghjuikol", "fghjkhjk,zmf"))
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
+        notes.add(
+            Note(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum, velit id eleifend volutpat, est mi tincidunt augue, laoreet posuere nisi nisl in eros. Cras pellentesque eu erat sit amet sollicitudin. Pellentesque",
+                "fghjkhjk,zmf"
+            )
+        )
 
         noteAdapter = NoteAdapter(notes, this)
 //        var layoutManagerA = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -72,18 +72,31 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         recyclerView.adapter = noteAdapter
 
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarNoteListActivity)
+        addNote_fab.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         if (view.tag != null) {
             Log.i("NoteListActivity", "clicked on ")
             showNoteDetail(view.tag as Int)
+        } else {
+            when(view.id) {
+                R.id.addNote_fab -> createNote()
+            }
         }
     }
 
+    private fun createNote() {
+        showNoteDetail(-1)
+    }
+
     fun showNoteDetail(noteIndex: Int) {
-        val note = notes[noteIndex]
+        val note = if(noteIndex == -1) {
+            Note()
+        } else {
+            notes[noteIndex]
+        }
         val intent = Intent(this, NoteDetailActivity::class.java)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, noteIndex)
@@ -103,7 +116,13 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     private fun saveReceivedData(data: Intent) {
         val noteIndex = data.getIntExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, -1)
         val note = data.getParcelableExtra<Note>(NoteDetailActivity.EXTRA_NOTE)
-        notes[noteIndex] = note
+        if(noteIndex == -1 && (note.title.isNotEmpty() || note.content.isNotEmpty())) {
+            notes.add(0, note)
+        } else if(noteIndex == -1 && (note.title.isEmpty() && note.content.isEmpty())) {
+            return
+        } else {
+            notes[noteIndex] = note
+        }
         noteAdapter.notifyDataSetChanged()
     }
 }

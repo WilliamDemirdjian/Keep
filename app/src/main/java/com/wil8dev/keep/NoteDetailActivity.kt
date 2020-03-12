@@ -3,9 +3,9 @@ package com.wil8dev.keep
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_note_detail.*
 
@@ -31,46 +31,9 @@ class NoteDetailActivity : AppCompatActivity() {
         title_note_detail.setText(note.title)
         content_note_detail.setText(note.content)
 
-        setSupportActionBar(toolbar_note_detail)
+        setSupportActionBar(toolbarNoteDetail)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-//        title_note_detail.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(p0: Editable?) {
-//                saveNote()
-//            }
-//
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                saveNote()
-//            }
-//        })
-//
-//        content_note_detail.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(p0: Editable?) {
-//                saveNote()
-//            }
-//
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                saveNote()
-//            }
-//        })
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                saveNote()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
 
     override fun onBackPressed() {
         saveNote()
@@ -84,5 +47,27 @@ class NoteDetailActivity : AppCompatActivity() {
         intent.putExtra(EXTRA_NOTE_INDEX, noteIndex)
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    //setting menu in action bar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.note_detail_activity_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // actions on click menu items
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.delete_note_detail_menu -> {
+            Toast.makeText(this,"delete action",Toast.LENGTH_LONG).show()
+            true
+        }
+        android.R.id.home ->{
+            saveNote()
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 }

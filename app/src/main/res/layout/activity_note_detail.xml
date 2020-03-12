@@ -4,28 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="18dp"
     tools:context=".NoteDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/backgroundLight"
-        android:id="@+id/toolbar_note_detail"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbarNoteDetail"/>
 
     <EditText
+        android:layout_below="@id/toolbarNoteDetail"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:id="@+id/title_note_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@android:color/transparent"
         android:cursorVisible="true"
-        android:layout_below="@+id/toolbar_note_detail"
         android:hint="Title"
         android:textCursorDrawable="@drawable/black_cursor"
         android:textSize="18sp" />
 
     <EditText
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:id="@+id/content_note_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +37,4 @@
         android:hint="Note"
         android:textCursorDrawable="@drawable/black_cursor"
         android:textSize="14sp" />
-
 </RelativeLayout>
