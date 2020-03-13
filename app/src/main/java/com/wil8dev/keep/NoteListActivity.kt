@@ -5,9 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.icu.lang.UCharacter
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -80,6 +83,12 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(toolbarNoteListActivity)
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false);
         addNote_fab.setOnClickListener(this)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            noteAdapter.notifyDataSetChanged()
+            val handler = Handler()
+            handler.postDelayed({swipeRefreshLayout.isRefreshing = false}, 1000)
+        }
     }
 
     override fun onClick(view: View) {
@@ -106,7 +115,8 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         snackbar.setAction(getString(R.string.undo)) {
             Log.i("MainActivity", "Clicked on Snackbar : undo")
         }
-        snackbar.setActionTextColor(Color.MAGENTA)
+        snackbar.setActionTextColor(Color.YELLOW)
+//        snackbar.anchorView = addNote_fab
         snackbar.show()
     }
 
@@ -164,6 +174,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
             val note = notes.removeAt(noteIndex)
             com.wil8dev.keep.utils.deleteNote(this, note)
             noteAdapter.notifyDataSetChanged()
+            deleteSnackbar()
         }
     }
 }

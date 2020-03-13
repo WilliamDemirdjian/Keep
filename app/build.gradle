@@ -50,4 +50,7 @@ dependencies {
     // Material Design
     implementation "com.google.android.material:material:$materialDesignVersion"
     implementation "androidx.mediarouter:mediarouter:$materialDesignVersion"
+
+    // Swipe Refresh Layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 }

@@ -61,7 +61,6 @@ class NoteDetailActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.delete_note_detail_menu -> {
-            Toast.makeText(this, "delete action", Toast.LENGTH_LONG).show()
             deleteNote()
             true
         }
