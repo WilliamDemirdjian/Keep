@@ -5,4 +5,5 @@
     <string name="delete">Delete</string>
     <string name="deleted_text_snackbar">Note moved to trash</string>
     <string name="undo">Undo</string>
+    <string name="view">View</string>
 </resources>

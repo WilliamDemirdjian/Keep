@@ -6,10 +6,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.wil8dev.keep.utils.loadNotes
 import com.wil8dev.keep.utils.persistNote
@@ -20,30 +21,88 @@ import java.io.Serializable
 class NoteListActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var notes: MutableList<Note>
     private lateinit var noteAdapter: NoteAdapter
+    private var gridLayoutManager = GridLayoutManager(this, GRID_LAYOUT_SPAN_COUNT)
+
+    companion object {
+        var GRID_LAYOUT_SPAN_COUNT = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_list)
 
+        loadData()
+        setRecyclerView()
+        setActionBar()
+        setFab()
+        setSwipeRefreshLayout()
+    }
+
+    private fun loadData() {
         notes = loadNotes(this)
+    }
 
-        noteAdapter = NoteAdapter(notes, this)
-
-        val flexboxLayoutManager = FlexboxLayoutManager(this, FlexDirection.ROW)
-        recyclerView.apply {
-            layoutManager = flexboxLayoutManager
-            adapter = noteAdapter
-        }
-
-        setSupportActionBar(toolbarNoteListActivity)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-        addNote_fab.setOnClickListener(this)
-
+    private fun setSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener {
             noteAdapter.notifyDataSetChanged()
             val handler = Handler()
             handler.postDelayed({ swipeRefreshLayout.isRefreshing = false }, 1000)
         }
+    }
+
+    private fun setFab() {
+        addNote_fab.setOnClickListener(this)
+    }
+
+    private fun setActionBar() {
+        setSupportActionBar(toolbarNoteListActivity)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun setRecyclerView() {
+        setAdapter()
+        recyclerView.apply {
+            layoutManager = gridLayoutManager
+            adapter = noteAdapter
+        }
+    }
+
+    private fun changeVue() {
+        if (gridLayoutManager.spanCount == 2) {
+            gridLayoutManager.spanCount = 1
+        } else {
+            gridLayoutManager.spanCount = 2
+        }
+        noteAdapter.notifyDataSetChanged()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_vue -> {
+            changeVue()
+            refreshIcon(item)
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun refreshIcon(item: MenuItem) {
+        if(gridLayoutManager.spanCount == 1) {
+            item.icon = getDrawable(R.drawable.ic_view_row_grey_24dp)
+        } else {
+            item.icon = getDrawable(R.drawable.ic_view_cards_grey_24dp)
+        }
+    }
+
+    private fun setAdapter() {
+        noteAdapter = NoteAdapter(notes, this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.note_list_activity_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onClick(view: View) {
