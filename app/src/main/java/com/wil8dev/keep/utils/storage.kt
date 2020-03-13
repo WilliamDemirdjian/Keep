@@ -8,11 +8,11 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.*
 
-private val TAG = "storage.kt"
+private const val TAG = "storage.kt"
 
 fun persistNote(context: Context, note: Note) {
 //    if(note.fileName.isEmpty()) {
-    if(TextUtils.isEmpty(note.fileName)) {
+    if (TextUtils.isEmpty(note.fileName)) {
         note.fileName = UUID.randomUUID().toString() + ".keep"
     }
 
@@ -22,14 +22,14 @@ fun persistNote(context: Context, note: Note) {
     outputStream.close()
 }
 
-fun deleteNote(context: Context, note:Note) {
+fun deleteNote(context: Context, note: Note) {
     context.deleteFile(note.fileName)
 }
 
 fun loadNotes(context: Context): MutableList<Note> {
     val notes = mutableListOf<Note>()
     val notesDirectory = context.filesDir
-    for(fileName in notesDirectory.list()) {
+    for (fileName in notesDirectory.list()) {
         val note = loadNote(context, fileName)
         Log.i(TAG, "Loaded note $note")
         notes.add(note)
