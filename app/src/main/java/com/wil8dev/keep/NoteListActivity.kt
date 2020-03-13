@@ -12,6 +12,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.wil8dev.keep.model.Note
+import com.wil8dev.keep.recyclerview.NoteAdapter
 import com.wil8dev.keep.utils.loadNotes
 import com.wil8dev.keep.utils.persistNote
 import kotlinx.android.synthetic.main.activity_note_list.*

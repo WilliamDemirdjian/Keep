@@ -1,4 +1,4 @@
-package com.wil8dev.keep
+package com.wil8dev.keep.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.wil8dev.keep.R
+import com.wil8dev.keep.model.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NoteAdapter(

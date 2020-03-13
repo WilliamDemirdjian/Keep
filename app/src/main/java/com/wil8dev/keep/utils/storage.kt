@@ -3,7 +3,7 @@ package com.wil8dev.keep.utils
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import com.wil8dev.keep.Note
+import com.wil8dev.keep.model.Note
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.*
