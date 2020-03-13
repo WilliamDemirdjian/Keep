@@ -110,7 +110,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         val snackbar = Snackbar.make(
             rootLayout,
             getString(R.string.deleted_text_snackbar),
-            Snackbar.LENGTH_INDEFINITE
+            10000
         )
         snackbar.setAction(getString(R.string.undo)) {
             Log.i("MainActivity", "Clicked on Snackbar : undo")
