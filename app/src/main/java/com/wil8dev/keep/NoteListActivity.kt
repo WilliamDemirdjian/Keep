@@ -113,7 +113,7 @@ class NoteListActivity : AppCompatActivity(), View.OnClickListener {
         val noteIndex = data.getIntExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, -1)
         when (data.action) {
             NoteDetailActivity.ACTION_SAVE_NOTE -> {
-                val note: Note? = data.getParcelableExtra(NoteDetailActivity.EXTRA_NOTE)
+                val note = data.getParcelableExtra<Note>(NoteDetailActivity.EXTRA_NOTE)
                 saveData(note!!, noteIndex)
             }
             NoteDetailActivity.ACTION_DELETE_NOTE -> {

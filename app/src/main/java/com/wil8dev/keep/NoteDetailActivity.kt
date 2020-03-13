@@ -27,7 +27,7 @@ class NoteDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_detail)
 
-        note = intent.getParcelableExtra(EXTRA_NOTE)
+        note = intent.getParcelableExtra<Note>(EXTRA_NOTE)
         noteIndex = intent.getIntExtra(EXTRA_NOTE_INDEX, -1)
 
         title_note_detail.setText(note.title)
