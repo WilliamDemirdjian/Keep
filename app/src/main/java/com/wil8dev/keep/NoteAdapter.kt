@@ -30,13 +30,16 @@ class NoteAdapter(
         val note = noteList[position]
         holder.itemView.cardView.setOnClickListener(itemClickListener)
         holder.itemView.cardView.tag = position
+
         if (note.title.isNotEmpty()) {
             holder.itemView.title.text = note.title
+            holder.itemView.title.visibility = View.VISIBLE
         } else {
             holder.itemView.title.visibility = View.GONE
         }
         if (note.content.isNotEmpty()) {
             holder.itemView.content.text = note.content
+            holder.itemView.content.visibility = View.VISIBLE
         } else {
             holder.itemView.content.visibility = View.GONE
             val params = RelativeLayout.LayoutParams(
