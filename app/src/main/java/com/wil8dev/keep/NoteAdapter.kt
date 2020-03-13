@@ -3,10 +3,16 @@ package com.wil8dev.keep
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NoteAdapter(private val noteList: List<Note>, private val itemClickListener: View.OnClickListener) :
+class NoteAdapter(
+    private val noteList: List<Note>,
+    private val itemClickListener: View.OnClickListener
+) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -25,15 +31,21 @@ class NoteAdapter(private val noteList: List<Note>, private val itemClickListene
         val note = noteList[position]
         holder.itemView.cardView.setOnClickListener(itemClickListener)
         holder.itemView.cardView.tag = position
-        if(note.title.isNotEmpty()) {
+        if (note.title.isNotEmpty()) {
             holder.itemView.title.text = note.title
         } else {
             holder.itemView.title.visibility = View.GONE
         }
-        if(note.content.isNotEmpty()) {
+        if (note.content.isNotEmpty()) {
             holder.itemView.content.text = note.content
         } else {
             holder.itemView.content.visibility = View.GONE
+            val params = RelativeLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(0, 0, 0, 0)
+            holder.itemView.title.layoutParams = params
         }
     }
 }
